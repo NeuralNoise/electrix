@@ -1,0 +1,21 @@
+/* 
+    Document   : electrix_profile
+    Created on : Nov 10, 2012, 1:51:10 PM
+    Author     : mageshravi
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.profile_table tr td:first-child {
+    color:#959595;
+}
+.profile_table tr td {
+    padding :3px;
+    vertical-align: middle;
+}
+.profile_table tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+.profile_table tr:last-child {
+    border-bottom: 1px solid lightgray;
+}

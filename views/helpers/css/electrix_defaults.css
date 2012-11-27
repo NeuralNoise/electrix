@@ -1,0 +1,87 @@
+/* 
+    Document   : electrix_defaults
+    Created on : Oct 20, 2012, 1:57:51 AM
+    Author     : mageshravi
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+html, body
+{
+    height:100%;
+}
+body
+{
+    font-family: Verdana, Arial, sans-serif;
+    font-size:0.75em;
+    line-height: 1.5em;
+    background-color:#aaa;
+
+    height: 100%;
+}
+h1, h2, h3, h4, h5, h6
+{
+    font-family:Helvetica, Arial, sans-serif;
+}
+h1
+{
+    font-size: 2em; 
+    margin: .67em 0;
+}
+h2
+{
+    font-size: 1.5em; 
+    margin: .83em 0;
+}
+h3
+{
+    font-size: 1.17em; 
+    margin: 1em 0;
+}
+h4
+{
+    font-size: 1em; 
+    margin: 1.33em 0;
+}
+h5
+{
+    font-size: .83em; 
+    line-height: 1.17em; 
+    margin: 1.67em 0;
+}
+h6
+{
+    font-size: .67em; 
+    margin: 2.33em 0;
+}
+h1, h2, h3, h4, h5, h6, b, strong, table th
+{
+    font-weight: bolder;
+}
+p
+{
+    margin: 1.12em 0;
+}
+a img
+{
+    border:none;
+}
+input[type=text], input[type=password], input[type=email]
+{
+    padding:2px 2.5px;
+    width: 280px;
+    font-size:12px;
+    background-color:#ececec;
+    border:1px solid #ddd;
+}
+textarea
+{
+    padding:2px 2.5px;
+    width: 280px;
+    font-size:12px;
+    background-color:#ececec;
+    border:1px solid #ddd;
+}

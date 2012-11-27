@@ -1,0 +1,12 @@
+/* 
+    Document   : electrix_login
+    Created on : Nov 10, 2012, 4:15:40 PM
+    Author     : mageshravi
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+table#login-table tr td {
+    padding: 3px 5px;
+}
+
