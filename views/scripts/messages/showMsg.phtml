@@ -1,0 +1,44 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<p class="title">View message</p>
+<br />
+<?php include("messages_menu.phtml"); ?>
+<br />
+<?php
+if (!isset($message)) 
+{
+    foreach($msg_details as $msgDetails)	
+    /* @var $msgDetails Msg*/
+        echo('<a href="javascript:history.go(-1)">Go back</a>
+			&nbsp;
+			<!--
+			<a href="index.php?rt=messages/compose&forwardMsg='.$msgDetails->getMessageId().'">Forward</a>
+			&nbsp;
+			-->
+			<a href="index.php?rt=messages/compose&reply_to_msg='.$msgDetails->getMessageId().'">Reply</a>
+			<br/>');
+?>
+<br/>
+<table class="showMsg" border="0" cellpadding="5" cellspacing="0" width="538px">
+<tr>
+	<td>From</td>
+	<td><?php echo ($msg_from); ?></td>
+</tr>
+<tr>
+	<td>To</td>
+    <td><?php echo ($msg_to); ?></td>
+</tr>
+<tr>
+	<td>Subject</td>
+        <td><?php echo (stripslashes($msgDetails->getSubject())); ?></td>
+</tr>
+<tr>
+	<td valign="top">Message</td>
+        <td><?php echo (stripslashes($msgDetails->getBody()));?></td>
+</tr>
+</table>
+	<?php
+}
+else
+	echo $message;
+?>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

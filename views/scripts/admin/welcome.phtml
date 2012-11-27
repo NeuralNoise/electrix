@@ -1,0 +1,50 @@
+<?php include VIEW_SCRIPTS.'index/templates/admin_header.phtml' ?>
+<h1>
+    <?php echo "Welcome"; ?>
+</h1>
+
+    <?php
+    if (isset($_GET['msg']))
+    {
+        if ($_GET['msg']=='success')
+        {
+           ?> <font color="green"> <?php echo 'Profile Added Successfully';
+        }
+    else if ($_GET['msg']=='failure')
+        {
+            ?> <font color="red"> <?php echo 'Profile Rejected';
+        }
+    }
+  
+    ?>
+</font>
+        
+<table>
+   
+    <?php
+    if(isset($arr_profilerequest))
+    {
+        ?><tr> 
+        <td> UNIVERSITY REGNO</td>
+        <td> FULL NAME</td>
+    </tr><?php
+        foreach ($arr_profilerequest as $profilerequest)
+        {
+            /*@var $profilerequest Profilerequest*/
+            ?>
+            <tr>
+                <td>
+                    <a href="index.php?rt=admin/viewDetails/request/<?php echo $profilerequest->getUnivregnno(); ?>">
+                        <?php echo $profilerequest->getUnivregnno(); ?>
+                    </a>
+                </td>
+                <td><?php echo $profilerequest->getFullname(); ?></td>
+            <?php
+        }
+    }
+     else
+        echo "<td colspan='3'>No Requests!</td>";
+     
+    ?>
+</table>
+ <?php include VIEW_SCRIPTS.'index/templates/admin_footer.phtml' ?>   

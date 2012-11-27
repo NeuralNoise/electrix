@@ -1,0 +1,26 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<p class="title">Profile pic</p>
+<br>
+<form name="imageUploader" method="post" enctype="multipart/form-data" action="index.php?rt=profile/changePic">
+<table border="0" cellpadding="5" cellspacing="0">
+<tr>
+    <td>
+    Profile Pic
+    </td>
+    <td>
+    <input type="file" name="file" id="file" />
+    </td>
+</tr>
+<tr>
+    <td></td>
+    <td>
+    <input  type="submit" value="Upload" />
+    </td>
+</tr>
+<tr>
+	<td></td>
+    <td><?php if(isset($message)) echo($message); ?></td>
+</tr>
+</table>
+</form>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

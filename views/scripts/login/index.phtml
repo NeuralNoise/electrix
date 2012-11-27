@@ -1,0 +1,38 @@
+<!-- login/index -->
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+
+<p class="title">
+    Login
+    <span>
+        <a href="index.php?rt=admin" style="float: right">Admin Login</a>
+    </span>
+</p>
+
+<form name="loginForm" method="post" action="index.php?rt=login">
+    <table id="login-table" width="50%" border="0" cellspacing="0" cellpadding="5">
+        <tr>
+            <td>Username</td>
+            <td><input type="text" name="username" required="required" maxlength="11"></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" name="password" required="required"></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="submit" class="button" value="Login">
+                &nbsp;&nbsp;
+                <a href="index.php?rt=profile/forgotPassword">Forgot Password?</a>
+                &nbsp;&nbsp;
+                <a href="index.php?rt=profilerequest">New user?</a>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><?php if (isset($message)) echo $message ; ?></td>
+        </tr>
+    </table>
+</form>
+
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

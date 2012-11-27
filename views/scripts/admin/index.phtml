@@ -1,0 +1,39 @@
+<!-- admin/index -->
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<p class="title">Login</p>
+<form method="post" action="index.php?rt=admin/login">
+<table id="login-table" width="50%" border="0" cellspacing="0" cellpadding="5">
+    <tr>
+        <td>
+            UserName  
+        </td>
+        <td>
+            <input type="Text" name="username" required="required" maxlength="11">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Password
+        </td>
+        <td>
+            <input type="password" name="password"  required="required">
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>
+            <input type="submit" value="SUBMIT" class="button">
+            &nbsp;
+            <span id="msg" style="color: red; width: 200px; display: inline-block">
+                <?php
+                if (isset($_GET['msg'])) {
+                    if (($_GET['msg']) == 'failure')
+                        echo "Invalid Login";
+                }
+                ?>
+            </span>
+        </td>
+    </tr>
+</table>
+</form>   
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

@@ -1,0 +1,18 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<p class="title">Photos - <?php if(isset($album)) echo($album); ?> <!--span style="font-size:14px">[<a href="index.php?rt=photos/upload">Upload</a>]</span--></p>
+<br />
+<?php
+
+if(isset($arr_image))
+{
+    foreach($arr_image as $image)
+    {
+            echo('
+            <a href="'.$image['orig'].'" >');
+            echo('<img src="'.$image['thumb'].'" alt="'.$album.'" height="106px" />');
+            echo('</a>');
+    }
+}
+    
+?>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

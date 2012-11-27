@@ -1,0 +1,32 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<p class="title">Messages - INBOX</p>
+<br />
+<?php include("messages_menu.phtml"); ?>
+<br />
+<form id="msgs_inbox" method="post" action="index.php?rt=messages/deleteMsg">
+<table class="inbox" border="0" cellspacing="1" cellpadding="5" width="100%">
+	<tr>
+    	<th width="5px"><input type="checkbox" id="select_all_mailbox" onclick="selectAllMsgs('delete_inbox_msgs[]')"></th>
+    	<th width="100px">Date</th>
+        <th width="150px">From</th>
+        <th>Subject</th>
+    </tr>
+    
+    <?php
+    if (isset($arr_msgsList))
+	foreach($arr_msgsList as $msg)
+	{
+        /* @var $msg MessageVO */
+		echo('<tr>
+				<td><input type="checkbox" name="delete_inbox_msgs[]" value="'.$msg->getMessageId().'"></td>
+				<td><a href="index.php?rt=messages/showMsg&messageId='.$msg->getMessageId().'&backto=inbox">'.date("d-M-Y",strtotime($msg->getDate())).'</td>
+				<td><a href="index.php?rt=messages/showMsg&messageId='.$msg->getMessageId().'&backto=inbox">'.$msg->getDisplayname().'</td>
+				<td><a href="index.php?rt=messages/showMsg&messageId='.$msg->getMessageId().'&backto=inbox">'.$msg->getSubject().'</a></td>
+			</tr>');
+	}
+	?>
+</table>
+<br />
+<input type="button" value="Delete" class="button" onclick="confirmDeleteMsgs('msgs_inbox')" />
+</form>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

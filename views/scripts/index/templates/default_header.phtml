@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><?php echo($title); ?></title>
+        <link href="<?php echo CSS; ?>master_reset.css" rel="stylesheet" type="text/css" media="screen" />
+        <link href="<?php echo CSS; ?>electrix_defaults.css" rel="stylesheet" type="text/css" media="screen" />
+        <link href="<?php echo CSS; ?>electrix_style.css" rel="stylesheet" type="text/css" media="screen" />
+        <?php
+        if(isset($css) && is_array($css)) {
+            foreach($css as $stylesheet) {
+                echo "<link href='". CSS ."$stylesheet.css' rel='stylesheet' type='text/css' media='screen' />";
+            }
+        }
+        ?>
+        <script src="<?php echo JS; ?>electrix_javascripts.js" type="text/javascript"></script>
+        <script src="<?php echo JS; ?>plugins/jQuery1.7.1.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.modal_overlay').click(function(){
+                    $('.modal_overlay').addClass('hide');
+                })
+            })
+        </script>
+    </head>
+
+    <body style="height: 100%">
+        <div align="center" style="height:100%">
+            <div class="modal_overlay hide">
+                <section class="modal_window_likeDetails">
+                </section>
+            </div>
+            <div id="envelope">
+                <div id="navigation" valign="top">
+                    <div id="profile_pic">
+                        <div class="profile_pic_mask">
+                            <a href="index.php?rt=profile/changePic">
+                                <img src="
+                                <?php
+                                if (isset($_SESSION['myid'])) {
+                                    if (file_exists(IMAGES . "/profilepics/" . $_SESSION['myid'] . ".jpg"))
+                                        echo(IMAGES . "profilepics/" . $_SESSION['myid'] . ".jpg");
+                                    else
+                                        echo(IMAGES . "profilepics/default.jpg");
+                                }
+                                else
+                                    echo(IMAGES . "profilepics/default.jpg");
+                                ?>
+                                " alt="Magesh's pic" />
+                            </a>
+                        </div>
+                    </div>
+                    <?php
+                    if (isset($_SESSION['myid'])) {
+                        //FOR AUTHORISED USER
+                        ?>
+                    <ul class="nav_links">
+                        <li>
+                            <a href="index.php">
+                                <img src="<?php echo IMAGES; ?>icon_home.png" />
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?rt=profile">
+                                <img src="<?php echo IMAGES; ?>icon_profile.png" />
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?rt=friends">
+                                <img src="<?php echo IMAGES; ?>icon_friends.png" />
+                                <span>Friends</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?rt=photos">
+                                <img src="<?php echo IMAGES; ?>icon_photos.png" />
+                                <span>Photos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?rt=messages">
+                                <img src="<?php echo IMAGES; ?>icon_messages.png" />
+                                <span>Messages</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?rt=messages/newsletter">
+                                <img src="<?php echo IMAGES; ?>icon_newsletter.png" />
+                                <span>Newsletter</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="index.php?rt=about">
+                                <img src="<?php echo IMAGES; ?>icon_mr.png" />
+                                <span>Electrix</span>
+                            </a>
+                        </li>
+                    </ul>
+                        <?php
+                    }
+                    ?>
+                </div>
+
+                <div id="content">
+
+                    <div id="profile_header">
+                    <?php
+                    if (isset($_SESSION['myid'])) {
+                        //FOR AUTHORISED USER
+                        ?>
+                        <div>
+                            <div style="float:left">
+                                <h1 style="display: inline-block">
+                                <?php
+                                if (isset($_SESSION['displayname']))
+                                    echo($_SESSION['displayname']);
+                                ?>
+                                </h1>
+                                &nbsp;&nbsp;
+                                <h2 style="display: inline-block">
+                                    In <?php
+                                    if (isset($_SESSION['currentLocation']))
+                                        echo($_SESSION['currentLocation']);
+                                    ?>
+                                </h2>
+
+                            </div>
+                            <div style="margin-top:12px; text-align:right">
+                                <?php
+                                if (isset($_SESSION['logintype']) && $_SESSION['logintype'] == 'admin') {
+                                    ?>
+                                    <img src="<?php echo IMAGES; ?>icon_logout.png" style="vertical-align: middle" />
+                                    <a href="index.php?rt=admin/logout">Logout</a> 
+                                    <?php
+                                } elseif (isset($_SESSION['myid'])) {
+                                    ?>
+                                    <a href="index.php?rt=login/logout" style="text-decoration: none">
+                                        <img src="<?php echo IMAGES; ?>icon_logout.png" style="vertical-align: middle" />
+                                        <span>Logout</span>
+                                    </a> 
+                                    <?php
+                                }
+                                ?>
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <span style="width: 500px; display: block">
+                            <?php
+                            if (isset($_SESSION['status']))
+                                echo($_SESSION['status']);
+                            ?>
+                        </span>
+                        <?php
+                    } else {
+                        //FOR UN-AUTHORISED USER
+                        ?>
+                        <h1>Welcome to Electrix</h1>
+                        <h3>A private networking app from Magesh Ravi</h3>
+                        <?php
+                    }
+                    ?>
+                </div>
+                <div id="story">

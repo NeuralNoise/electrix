@@ -1,0 +1,243 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<script src="<?php echo JS; ?>plugins/rainforestnet/datetimepicker_css.js"></script>
+<script type="text/javascript">
+    function callback(id, datum)
+    {
+        var CalId = document.getElementById(id);
+        if (datum=== 'undefined') 
+        { 
+            var d = new Date();
+            datum = d.getDate() + '/' +(d.getMonth()+1) + '/' + d.getFullYear(); 
+        } 
+        window.calDatum=datum;
+        CalId.value=datum;
+        if(Cal.ShowTime)
+        { 
+            CalId.value+=' '+Cal.getShowHour()+':'+Cal.Minutes; 
+            if (Cal.ShowSeconds)  CalId.value+=':'+Cal.Seconds; 
+            if (TimeMode === 12)  CalId.value+=''+Cal.getShowAMorPM();
+        }
+        if(CalId.onchange!=undefined) CalId.onchange();
+        CalId.focus();
+        winCal.style.visibility='hidden';
+    }
+    
+     function trim(str, chars)
+        {
+	return ltrim(rtrim(str, chars), chars);
+        }
+        function ltrim(str, chars)
+         {
+	chars = chars || "\\s";
+	return str.replace(new RegExp("^[" + chars + "]+", "g"), "");
+         }
+        function rtrim(str, chars)
+        {
+	chars = chars || "\\s";
+	return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
+        }
+    
+    function checkAndSubmit()
+    {
+        err_msg = document.getElementById('err_msg');
+        
+        univregnno_el = document.getElementById('univregnno');
+        fullname_el=document.getElementById('fullname');
+        dob_el= document.getElementById('dob');
+        email_el=document.getElementById('email');
+        phone_el=document.getElementById('phone');
+        currentLocation_el=document.getElementById('currentLocation');
+        contactAddress_el=document.getElementById('contactAddress');
+  
+        //RESET
+        err_msg.innerHTML = '';
+        univregnno_el.style.borderColor = '';
+        fullname_el.style.borderColor = '';
+        dob_el.style.borderColor='';
+        email_el.style.borderColor = '';
+        phone_el.style.borderColor='';
+        currentLocation_el.style.borderColor='';
+        contactAddress_el.style.borderColor='';
+        
+        //VALIDATIONS
+        if(trim(univregnno_el.value, ' ').length < 10)
+        {
+            err_msg.innerHTML = 'University Regn no should be minimum 10 digits!';
+            univregnno_el.style.borderColor = 'red';
+            return false;
+        }
+        
+        var univregnno_pattern = /^[0-9]+$/;
+        var univregnno = univregnno_el.value;
+        
+        if(!univregnno_pattern.test(univregnno))
+        {
+            err_msg.innerHTML='University Regn no should contain only digits!';
+            univregnno_el.style.borderColor = 'red';
+            return false;
+        }
+  
+        var fullname_pattern = new RegExp("^[A-Za-z\.\' ]{6,64}$");
+        var fullname = fullname_el.value;
+        
+        if(! fullname_pattern.test(fullname))
+        {
+            err_msg.innerHTML='Full name should be minimum 6 characters long and can have only alphabets and white spaces';
+            fullname_el.style.borderColor = 'red';
+            return false;
+        }
+
+        var dob_pattern = new RegExp("^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$");
+        var dob=dob_el.value;
+        if(!dob_pattern.test(dob))
+        {
+            err_msg.innerHTML='DOB should be in dd-mm-yyyy format';
+            dob_el .style.borderColor='red';
+            return false;
+        }
+        
+        arr_date = dob.split('-');
+        arr_limit = new Array('2011','12','31');
+        arr_errMsg = new Array('Year', 'Month', 'Day');
+                
+        for(i=0; i<3; i++)
+        {
+            if(arr_date[i]=='0000' || arr_date[i]=='00' || arr_date[i]=='0')
+            {
+                err_msg.innerHTML= arr_errMsg[i]+' cannot be zero';
+                dob_el.style.borderColor='red';
+                return false;
+            }
+            if(arr_date[i] > arr_limit[i])
+            {
+                err_msg.innerHTML= arr_errMsg[i]+' cannot be greater than '+arr_limit[i];
+                dob_el.style.borderColor='red';
+                return false;
+            }
+        }
+        
+       var email_pattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+       var email=email_el.value;
+       if(!email_pattern.test(email))
+           {
+               err_msg.innerHTML='Invalid Email format';
+               email_el.style.borderColor = 'red';
+               return false;
+           }
+           
+          
+        var phone_pattern = new RegExp("^[0-9]{2,3}[0-9]{8,10}$");
+        var phone=phone_el.value;
+        if(!phone_pattern.test(phone))
+            {
+                err_msg.innerHTML='Invalid phone number';
+                phone_el.style.borderColor='red';
+                return false;
+            }
+            
+        var currentLocation_pattern = new RegExp("^[A-Za-z]{3,20}$");
+        var currentLocation = currentLocation_el.value;
+        if(!currentLocation_pattern.test(currentLocation))
+        {
+            err_msg.innerHTML='Enter valid location';
+            currentLocation_el.style.borderColor='red';
+            return false;
+        }
+        
+       if(trim(contactAddress_el.value, ' ').length < 10)
+       {
+           err_msg.innerHTML='No sufficient Information';
+           contactAddress_el.style.borderColor='red';
+           return false;
+       }       
+       return true;
+ }
+</script>
+<p class="title">Profile Request&nbsp;<span></span></p>
+<br />
+<form id="form1" name="form1" method="post" action="index.php?rt=profilerequest" onsubmit="return checkAndSubmit()">
+<table id="profileRequest_table" border="0" cellpadding="5" cellspacing="0">
+    <tr>
+	<td>University Regn No</td>
+        <td>
+            <input type="text" id="univregnno" name="univregnno" 
+                   value="<?php 
+                   if(isset($profilerequest)) echo $profilerequest->getUnivregnno(); 
+                   ?>"/>
+        </td>
+    </tr>
+    <tr>
+    	<td>Full name</td>
+        <td>
+            <input type="text" id="fullname" name="fullname" 
+                   value="<?php
+                  if(isset($profilerequest)) echo $profilerequest->getFullname();
+                   ?>"/>
+        </td>
+    </tr>
+    <tr>
+    	<td>Date of birth</td>
+        <td><input type="text" id="dob" name="dob" 
+                   value="<?php 
+                   if(isset($profilerequest)) echo $profilerequest->getdob();
+                   ?>" style="width: 250px" />
+             &nbsp;
+            <img src="<?php echo JS; ?>plugins/rainforestnet/images2/cal.gif" 
+                 onclick="NewCssCal('dob','yyyymmdd')" 
+                 style="cursor: pointer; vertical-align: middle" />
+        </td>    
+    </tr>
+    <tr>
+    	<td>E-mail</td>
+        <td valign="baseline">
+            <input type="text" id="email" name="email" 
+                   value="<?php
+                   if(isset($profilerequest)) echo $profilerequest->getEmail();
+                   ?>"/>
+        </td>
+    </tr>
+    <tr>
+    	<td>Phone no.</td>
+        <td valign="baseline">
+            <input type="text" id="phone" name="phone" 
+                   value="<?php
+                   if(isset($profilerequest)) echo $profilerequest->getPhone();
+                   ?>"/>
+        </td>
+    </tr>
+    <tr>
+    	<td>Current location</td> 
+        <td valign="baseline">
+            <input type="text" id="currentLocation" name="currentLocation" 
+                   value="<?php
+                   if(isset($profilerequest)) echo $profilerequest->getCurrentLocation();
+                    ?>"/>
+        </td>
+    </tr>
+    <tr>
+    	<td valign="top">Contact address</td>
+        <td>
+            <textarea id="contactAddress" name="contactAddress"></textarea>
+        </td>
+    </tr>    
+    <tr>
+    	<td>&nbsp;</td>
+        <td>
+            <input type="submit" id="sendRequest" value="Send Request" 
+                   class="button" style="vertical-align: middle"/>
+            &nbsp;
+            <span id="err_msg" class="alert" />
+                <?php
+                if(isset($err_message)) echo $err_message;
+                
+                ?>
+            </span>
+            <span class="success">
+                <?php if(isset($message)) echo $message; ?>
+            </span>
+                
+        </td>
+    </tr>
+</table>
+</form>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

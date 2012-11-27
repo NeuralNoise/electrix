@@ -1,0 +1,54 @@
+<?php
+if ($_SESSION['logintype'] == 'admin') {
+    include VIEW_SCRIPTS . 'index/templates/admin_header.phtml';
+} else {
+    include VIEW_SCRIPTS . 'index/templates/default_header.phtml';
+}
+?>
+
+<link href="<?php echo CSS; ?>electrix_feeds.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="<?php echo JS; ?>index/index.js" type="text/javascript"></script>
+
+<form id="update_status" method="post" action="index.php" >
+    <input type="text" name="status_msg" placeholder="Your status message"
+           id="status_msg" onkeypress="return event.keyCode!=13" maxlength="140" />
+    &nbsp;
+    <input type="submit" class="button" id="share_status" value="SHARE"/>
+    &nbsp;
+</form>
+
+<div class="updates-wrapper">
+    <?php
+    if (isset($arr_birthdayVO)) {
+        if (count($arr_birthdayVO) == 0)
+            echo("<div class='updatesWrapper'>No birthdays today</div>");
+        else {
+            foreach ($arr_birthdayVO as $curBirthday) {
+                /* @var $curBirthday BirthdayVO */
+                echo("<div class='updatesWrapper'><span='name'>" . $curBirthday->getDisplayname() . "'s</span> birthday</div>");
+            }
+        }
+    }
+    ?>
+</div>
+
+<div id="recentActivity">
+    <input type="hidden" name="offset_count" id="offset_count" value="1" />
+    <?php
+    if (isset($arr_updatesVOstatus) && isset($arr_allComments)) {
+
+        loadComponent('Newsfeed');
+        showNewsfeed($arr_updatesVOstatus, $arr_allComments);
+    }
+    else
+        echo "No news items";
+    ?>
+</div>
+
+<?php
+if ($_SESSION['logintype'] == 'admin') {
+    include VIEW_SCRIPTS . 'index/templates/admin_footer.phtml';
+} else {
+    include VIEW_SCRIPTS . 'index/templates/default_footer.phtml';
+}
+?>

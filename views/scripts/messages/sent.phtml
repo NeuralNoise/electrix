@@ -1,0 +1,82 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<script type="text/javascript">
+$(document).ready(function(){
+    console.log("Has query" + $('table.inbox tr[data-msgid]').has('td:first-child').size());
+    
+    var prevMsgId = 0;
+    
+    $('table.inbox tr[data-msgid]').each(function(){
+       curMsgId = $(this).attr('data-msgid');
+       
+       if( $(this).has('td:first-child input[type=checkbox]').size() == 1 )
+           ;//DO NOTHING. FIRST ROW OF THE MSGID SLOT.
+       else if(curMsgId == prevMsgId)
+       {
+           //GET SENDER NAME
+           sender_name = $(this).find('td:last-child').text();
+           
+           tar_sent_to = $('table.inbox tr[data-msgid='+ curMsgId + ']').has('td:first-child input[type=checkbox]').find('td:last-child');
+           
+           //APPENDS THE DISPLAY NAME TO FIRST ROW OF THE CURRENT MSGID SLOT
+           tar_sent_to.text( tar_sent_to.text()+', '+sender_name );
+           
+           //Remove current row
+           $(this).remove();
+       }
+       
+       prevMsgId = curMsgId;
+       
+    });
+    
+});
+</script>
+<p class="title">Messages - SENT</p>
+<br />
+<?php include("messages_menu.phtml"); ?>
+<br />
+<form id="msgs_sent" method="post" action="index.php?rt=messages/deleteMsg">
+<table class="inbox" border="0" cellspacing="1" cellpadding="5" width="590px">
+	<tr>
+    	<th width="5px">
+            <input type="checkbox" id="select_all_mailbox" onclick="selectAllMsgs('delete_sent_msgs[]')">
+        </th>
+    	<th width="100px">Date</th>
+        <th width="150px">Subject</th>
+        <th>Sent to</th>
+    </tr>
+    <?php
+	foreach($msgs_list as $msg)
+	{
+            /* @var $msg MessageVO */
+                if(((isset($prev_msgId)) && ($prev_msgId) == $msg->getMessageId()))
+                echo('<tr data-msgid="'.$msg->getMessageId().'">
+                            <td></td>
+                            <td></td>
+                            <td></td>	
+                            <td><a href="index.php?rt=messages/showMsg&messageId='.$msg->getMessageId().'&backto=sent">'.$msg->getMsgto().'</a></td>
+                    </tr>');
+                else
+		echo('<tr data-msgid="'.$msg->getMessageId().'">
+                            <td><input type="checkbox" name="delete_sent_msgs[]" value='.$msg->getMessageId().'></td>
+                            <td><a href="index.php?rt=messages/showMsg&messageId='.$msg->getMessageId().'&backto=sent">'.date("d-M-Y",strtotime($msg->getDate())).'</a></td>
+                            <td><a href="index.php?rt=messages/showMsg&messageId='.$msg->getMessageId().'&backto=sent">'.$msg->getSubject().'</a></td>	
+                            <td><a href="index.php?rt=messages/showMsg&messageId='.$msg->getMessageId().'&backto=sent">'.$msg->getMsgto().'</a></td>
+		    </tr>');
+                 $prev_msgId = $msg->getMessageId();  
+	}
+	
+	//FUNCTION TO LIMIT SUMMARY
+	function getSummary($fullText)
+	{
+		$limit =60;
+		$fullText = stripslashes($fullText);
+		if (strlen($fullText) > $limit)
+      		$fullText = substr($fullText, 0, strrpos(substr($fullText, 0, $limit), ' ')) . '...';
+      	return $fullText;	
+	}
+	?>
+</table>
+<br />
+<input type="button" value="Delete" class="button" onclick="confirmDeleteMsgs('msgs_sent')" />
+</form>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

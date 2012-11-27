@@ -1,0 +1,101 @@
+<?php
+if ($_SESSION['logintype'] == 'admin')
+    include VIEW_SCRIPTS . 'index/templates/admin_header.phtml';
+else
+    include VIEW_SCRIPTS . 'index/templates/default_header.phtml';
+?>
+<table border="0" cellpadding="5" cellspacing="0" width="100%">
+    <tr>
+        <td width="100px" rowspan="2" valign="top">
+            <div class="profile_pic_mask">
+                <img src="<?php
+                    if (file_exists(IMAGES . "profilepics/" . $_GET['id'] . ".jpg"))
+                        echo(IMAGES . "profilepics/" . $_GET['id'] . ".jpg");
+                    else
+                        echo(IMAGES . "profilepics/default.jpg");
+                    ?>" 
+                     class="rounded_corners_10px" <?php echo($_COOKIE['friend_pic_resize'] . "='100'"); ?> />
+            </div>
+        </td>
+        <td>
+            <p class="title">
+            <?php
+            if (isset($message))
+                echo($message);
+            else {
+                if (isset($farr_profile)) {
+                    foreach ($farr_profile as $profile) {
+                        /* @var $profile Profile */
+
+                        echo $profile->getDisplayname();
+
+                        if ($_SESSION['logintype'] == 'user') {
+                            ?>
+                            <span style="font-size:14px;">
+                                <a href="index.php?rt=messages/compose/to/<?php echo $profile->getDisplayname(); ?>">Send message
+                                </a>
+                            </span>
+                            <?php
+                        }
+                ?>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="friend_profile_table" border="0" cellpadding="5" cellspacing="0">
+                <tr>
+                    <td>Full name</td>
+                    <td><?php echo $profile->getFullname(); ?></td>
+                </tr>
+                <tr>
+                    <td>Date of birth</td>
+                    <td><?php echo $profile->getDob(); ?></td>
+                </tr>
+                <tr>
+                    <td>Current location</td>
+                    <td><?php echo $profile->getCurrentlocation(); ?></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td><?php echo $profile->getContactaddress(); ?></td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td><?php echo $profile->getEmail1(); ?></td>
+                </tr>
+                <tr>
+                    <td>Alt. e-mail</td>
+                    <td><?php echo $profile->getEmail2(); ?></td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td><?php echo $profile->getPhone1(); ?></td>
+                </tr>
+                <tr>
+                    <td>Alt. phone</td>
+                    <td><?php echo $profile->getPhone2(); ?></td>
+                </tr>
+            <?php
+            if (isset($_SESSION['lastlogin'])) {
+                ?>
+                <tr>
+                    <td>Last Login</td>
+                    <td><?php echo $_SESSION['lastlogin'] ?></td>
+                </tr>
+                <?
+            }
+        }
+    }
+}
+            ?>
+        </table>
+        </td>
+    </tr>
+</table>
+<?php
+if ($_SESSION['logintype'] == 'admin')
+    include VIEW_SCRIPTS . 'index/templates/admin_footer.phtml';
+else
+    include VIEW_SCRIPTS . 'index/templates/default_footer.phtml';
+?>

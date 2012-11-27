@@ -1,0 +1,225 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<script type="text/javascript"> 
+    
+function trim(str, chars)
+        {
+        return ltrim(rtrim(str, chars), chars);
+        }
+        function ltrim(str, chars)
+         {
+        chars = chars || "\\s";
+        return str.replace(new RegExp("^[" + chars + "]+", "g"), "");
+         }
+        function rtrim(str, chars)
+        {
+        chars = chars || "\\s";
+        return str.replace(new RegExp("[" + chars + "]+$", "g"), "");
+        }
+        
+function checkAndSubmitt()
+    {
+        orig_button = document.getElementById('saveDetails').value;
+        button = document.getElementById('saveDetails');
+        button.value = 'Please wait';
+        button.disabled = 'disabled';
+        
+        err_msg = document.getElementById('err_msg');
+        fullname_el=document.getElementById('fullname');
+        currentLocation_el=document.getElementById('currentLocation');       
+        email1_el=document.getElementById('email1');
+        email2_el=document.getElementById('email2');
+        phone1_el=document.getElementById('phone1');
+        phone2_el=document.getElementById('phone2');       
+        contactAddress_el=document.getElementById('contactAddress');
+
+        //RESET
+        err_msg.innerHTML = '';
+        fullname_el.style.borderColor = '';
+        currentLocation_el.style.borderColor='';
+        email1_el.style.borderColor = '';
+        email2_el.style.borderColor = '';
+        phone2_el.style.borderColor='';
+        phone2_el.style.borderColor='';   
+        contactAddress_el.style.borderColor='';
+           
+        //VALIDATIONS
+        var fullname_pattern = new RegExp("^[A-Za-z\.\' ]{6,64}$");
+        var fullname = fullname_el.value;        
+        if(! fullname_pattern.test(fullname))
+        {
+            err_msg.innerHTML='Full name should be minimum 6 characters long and can have only alphabets and white spaces';
+            fullname_el.style.borderColor = 'red';
+            button.value = orig_button;
+            button.disabled = false;
+            return false;
+        }
+        
+        var currentLocation_pattern = new RegExp("^[A-Za-z]{3,20}$");
+        var currentLocation = currentLocation_el.value;
+        if(!currentLocation_pattern.test(currentLocation))
+        {
+            err_msg.innerHTML='Enter valid location';
+            currentLocation_el.style.borderColor='red';
+            button.value = orig_button;
+            button.disabled = false;
+            return false;
+        }
+               
+       var email1_pattern = new RegExp("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)↪*(\.[a-z]{2,3})$");
+       var email1=email1_el.value;
+       if(!email1_pattern.test(email1))
+           {
+               err_msg.innerHTML='Invalid Email format';
+               email1_el.style.borderColor = 'red';
+               button.value = orig_button;
+               button.disabled = false;
+               return false;
+           }
+           
+       var email2_pattern = new RegExp("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)↪*(\.[a-z]{2,3})$");
+       var email2=email2_el.value;
+       if(email2!="")
+       {
+        if(!email2_pattern.test(email2))
+        {
+            err_msg.innerHTML='Invalid Email format';
+            email2_el.style.borderColor = 'red';
+            button.value = orig_button;
+            button.disabled = false;
+            return false;
+        }           
+       }
+          
+        var phone1_pattern = new RegExp("^[0-9]{10,12}$");
+        var phone1=phone1_el.value;
+        if(!phone1_pattern.test(phone1))
+        {
+            err_msg.innerHTML='Invalid phone number';
+            phone1_el.style.borderColor='red';
+            button.value = orig_button;
+            button.disabled = false;
+            return false;
+        }
+            
+        var phone2_pattern = new RegExp("^[0-9]{2,3}[0-9]{8,10}$");
+        var phone2=phone2_el.value;
+        if(phone2!="")
+        {
+            if(!phone2_pattern.test(phone2))
+            {
+                err_msg.innerHTML='Invalid phone number';
+                phone2_el.style.borderColor='red';
+                button.value = orig_button;
+                button.disabled = false;
+                return false;
+            }
+        }
+                
+       if(trim(contactAddress_el.value, ' ').length < 10)
+       {
+           err_msg.innerHTML='No sufficient Information';
+           contactAddress_el.style.borderColor='red';
+           button.value = orig_button;
+           button.disabled = false;
+           return false;
+       }       
+       return true;
+}       
+</script>        
+<p class="title">Edit Profile&nbsp;
+    <span>
+        <a href="index.php?rt=profile/changePwd">Change password</a>
+        &nbsp;
+        <a href="index.php?rt=profile/changePic">Change profile picture</a>
+    </span>
+</p>
+<?php 
+if(isset($profile))
+{
+        /* @var $profile Profile  */        
+ ?>
+<form id="edit_profile" method="post" action="index.php?rt=profile/edit" onsubmit="return checkAndSubmitt()">
+<table class="profile_table" border="0" cellpadding="5" cellspacing="0">
+    <tr>
+	<td>Name*</td>
+        <td>
+            <input type="text" id="fullname" name="fullname" 
+            value="<?php echo($profile->getFullname()); ?>" />
+        </td>
+    </tr>
+    <tr>
+    	<td>Display name</td>
+        <td>
+                   <?php echo($profile->getDisplayname()); ?>
+        </td>
+    </tr>
+    <tr>
+    	<td>Current location*</td>
+        <td><input type="text" id="currentLocation" name="currentLocation" 
+            value="<?php echo($profile->getCurrentLocation()); ?>"></td>
+    </tr>
+    <tr>
+    	<td>Date of birth</td>
+        <td>
+                   <?php echo($profile->getdob()); ?>
+	</tr>
+    <tr>
+    	<td>E-mail*</td>
+        <td>
+            <input type="text" id="email1" name="email1" 
+            value="<?php echo($profile->getemail1()); ?>">
+        </td>
+    </tr>
+    <tr>
+    	<td>Alternate e-mail</td>
+        <td>
+            <input type="text" id="email2" name="email2" 
+            value="<?php echo($profile->getemail2()); ?>"></td>
+    </tr>
+    <tr>
+    	<td valign="top">Phone no.*</td>
+        <td><input type="text" id="phone1" name="phone1" 
+            value="<?php echo($profile->getphone1()); ?>" maxlength="14" /></td>
+	</tr>
+    <tr>
+    	<td valign="top">Alternate phone no.</td>
+        <td><input type="text" id="phone2" name="phone2" 
+            value="<?php echo($profile->getphone2()); ?>" maxlength="14" /></td>
+    </tr>
+    <tr>
+    	<td>Address for contact</td>
+        <td>
+            <textarea id="contactAddress" name="contactAddress" 
+                      rows="5"><?php echo($profile->getcontactAddress()); ?></textarea>
+        </td>
+    </tr>
+    <tr>
+      <td>Notifications</td>
+      <td><input type="checkbox" name="notify" <?php if($profile->getNotify()==1) echo("checked=true"); ?> value="Y" />
+      <span id="notifications" style="width: 250px; display: inline-block">
+       Send me email notifications for status msgs, profile updates and comments</span></td>
+    </tr>
+    <tr>
+    	<td>&nbsp;</td>
+        <td><input type="submit" id="saveDetails" value="Save" class="button" ></td>
+    </tr>
+    <tr>
+    	<td>&nbsp;</td>
+        <td>
+            <span id="err_msg" class="alert" />
+                <?php
+                if(isset($message)) echo $message;
+                ?>
+            </span>
+        </td>
+    </tr>
+</table>
+</form>
+<?php
+}
+else
+{
+    $this->log->debug('No rows selected');
+}
+?>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

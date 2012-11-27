@@ -1,0 +1,79 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<p class="title">
+    Profile
+    <span><a href="index.php?rt=profile/edit">Edit</a></span>
+</p>  
+
+<?php 
+if(isset($profile))
+{
+        /* @var $profile Profile  */            
+ ?>
+
+<form id="view_profile" method="post" action="index.php?rt=profile/display" >
+<table class="profile_table" border="0" cellpadding="5" cellspacing="0">
+    <tr>
+	<td valign="baseline">Name*</td>
+        <td valign="baseline"><?php echo($profile->getFullname()); ?></td>
+    </tr>
+    <tr>
+    	<td valign="baseline">Display name</td>
+        <td valign="baseline">
+                   <?php echo($profile->getDisplayname()); ?></td>
+    </tr>
+    <tr>
+    	<td valign="baseline">Current location*</td>
+        <td valign="baseline"><?php echo($profile->getCurrentLocation()); ?></td>
+    </tr>
+    <tr>
+    	<td valign="baseline">Date of birth</td>
+        <td valign="baseline">
+                   <?php echo($profile->getdob()); ?>
+    </tr>
+    <tr>
+    	<td valign="baseline">E-mail*</td>
+        <td valign="baseline"><?php echo($profile->getemail1()); ?></td>
+    </tr>
+    <tr>
+    	<td valign="baseline">Alternate e-mail</td>
+        <td valign="baseline"><?php echo($profile->getemail2()); ?></td>
+    </tr>
+    <tr>
+    	<td valign="top">Phone no.*</td>
+        <td><?php echo($profile->getphone1()); ?></td>
+    </tr>
+    <tr>
+    	<td valign="top">Alternate phone no.</td>
+        <td><?php echo($profile->getphone2()); ?></td>
+    </tr>
+    <tr>
+    	<td valign="middle">Address for contact</td>
+        <td valign="baseline"><?php echo($profile->getcontactAddress()); ?></td>
+    </tr>
+  <!--  <tr>
+      <td>Notifications</td>
+      <td><input type="checkbox" style="vertical-align: top" name="notify"  value="Y" />-->
+      <!--<td><input type="checkbox" name="notify" <?php if($notifications) echo("checked=true"); ?> value="Y" />-->
+      <!--<span id="notifications" style="width: 250px; display: inline-block">
+       Send me email notifications for status msgs, profile updates and comments</span></td>
+    </tr>
+    <tr>
+    	<td>&nbsp;</td>
+        <td><input type="button" id="saveDetails" value="Save" class="button" onclick="changeLabel('editProfile','saveDetails')"></td>
+    </tr>
+    <tr>
+    	<td>&nbsp;</td>
+        <td></td>-->
+   
+    </tr>
+</table>
+</form>
+<?php
+
+}
+else
+{
+    $this->log->debug('No rows selected');
+}
+?>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

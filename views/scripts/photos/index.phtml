@@ -1,0 +1,43 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<p class="title">Upload Photos</p>
+<br>
+<form name="imageUploader" method="post" enctype="multipart/form-data" action="index.php?rt=photos">
+    <table border="0" cellpadding="5" cellspacing="0">
+    <tr>
+        <td>
+        Choose file
+        </td>
+        <td>
+        <input type="file" name="file" id="file" />
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+        <input  type="submit" value="Upload" />
+        </td>
+    </tr>
+    <tr>
+            <td></td>
+        <td><?php if(isset($message)) echo($message); ?></td>
+    </tr>
+    </table>
+</form>
+
+<?php
+    if(isset($arr_photo ))
+    {
+        foreach($arr_photo as $photo)
+        {
+            /* @var $photo Photo */
+            $photoLoc = IMAGES."album/{$_SESSION['displayname']}";
+           
+            echo <<<thumbnails
+            <a href="$photoLoc/{$photo->getFileName()}">
+                <img src="$photoLoc/thumbnails/{$photo->getFileName()}" title="{$photo->getDescription()}" class="thumbnails" />
+            </a>
+thumbnails;
+        }
+    }
+?>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

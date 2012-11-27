@@ -1,0 +1,122 @@
+<!-- friends/index -->
+<?php 
+if($_SESSION['logintype']=='admin')
+    include VIEW_SCRIPTS.'index/templates/admin_header.phtml';
+else
+    include VIEW_SCRIPTS.'index/templates/default_header.phtml';
+?>
+<script src="<?php echo JS; ?>plugins/jQuery1.7.1.min.js" type="text/javascript" ></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#friendsList img').each(function(){
+            alt_attr = $(this).attr('alt');
+            arr_id_name = alt_attr.split('_');
+            
+            new_html = "\
+                <div class='friendsList'>\
+                    <div class='friendsList_mask'>\
+                    <a href='index.php?rt=friends/view/id/"+ arr_id_name[0] +"' title='"+ arr_id_name[1] +"'>\
+                        <img src='"+ $(this).attr('src') +"' alt='"+ alt_attr +"' height='50'  />\
+                    </a>\
+                    </div>\
+                    <span>"+ arr_id_name[1] +"</span>\
+                </div>";
+            
+            $(this).parent('td').html(new_html);
+        });
+    });
+    
+    function filterFriends(input_el)
+    {
+        ip_name = $(input_el).val().toLowerCase();
+        console.log(ip_name);
+        
+        $('div.friendsList').each(function(){
+            $(this).addClass('searchFriends_hide');
+            $(this).find('div.friendsList_mask a').attr('tabindex',-1);
+        });
+        
+        $('div.friendsList').each(function(){
+            
+            pattern = new RegExp(ip_name);
+            
+            if( pattern.test( $(this).find('span').text().toLowerCase() ) )
+            {
+                $(this).removeClass('searchFriends_hide');
+                $(this).find('div.friendsList_mask a').attr('tabindex',2);
+            }
+        });
+    }
+</script>
+<?php 
+    if(isset($_SESSION['logintype']) && (($_SESSION['logintype']=='admin')))
+    {
+        ?>
+         <p class="title">Existing Users</p> 
+        <?php 
+    }
+    else
+    {
+        ?>
+        <p class="title">
+            Friends
+            <input type="search" style="float:right" 
+                   tabindex="1"
+                   onkeyup="filterFriends(this)" onblur="filterFriends(this)"/>
+            <span style="display: block; clear: both"></p>
+        </p>
+        <?php
+    }
+?>
+    
+<br/>
+
+
+<table border="0" cellpadding="3" cellspacing="2" id="friendsList">
+<?php
+$arr_friends = array();
+if (isset($arr_profile))
+{   
+    $count = 0;
+    foreach($arr_profile as $profile)
+    {
+      /* @var $profile Profile*/
+        
+        $profilePicLoc = IMAGES."profilepics/";
+        if(file_exists($profilePicLoc.$profile->getProfileId().".jpg"))
+            $img_src = $profilePicLoc.$profile->getProfileId().".jpg";
+        else
+            $img_src = $profilePicLoc."default.jpg";
+        
+        $array_item = "<img src='$img_src' alt='{$profile->getProfileId()}_{$profile->getDisplayname()}' />";
+        $arr_friends[$count] = $array_item;
+        $count++;
+    }
+}
+
+$count = 0;
+if (isset($arr_friends))
+{
+    foreach($arr_friends as $friend)
+    {
+        if($count % 6 == 0)
+                echo("<tr>");
+
+        echo("<td>".$friend."</td>");
+
+        if($count % 6 == 5)
+                echo("</tr>");
+        $count++;
+    }
+}
+?>
+</table>
+<?php if($_SESSION['logintype']=='admin')
+	{
+		include VIEW_SCRIPTS.'index/templates/admin_footer.phtml';
+	}
+	else
+	{
+		include VIEW_SCRIPTS.'index/templates/default_footer.phtml';
+	}
+?>

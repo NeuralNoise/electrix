@@ -1,0 +1,51 @@
+<?php include VIEW_SCRIPTS.'index/templates/default_header.phtml' ?>
+<p class="title">Change Password</p>
+<br>
+<form name="change_password" id="change_password" method="post" action="index.php?rt=profile/changePwd" onsubmit="return validate_change_password()">
+	<table border="0" cellpadding="5" cellspacing="0">
+    	<tr>
+        	<td>Existing password</td>
+            <td><input type="password" required="required" name="existing_pwd" id="existing_pwd" tabindex="1"></td>
+        </tr>
+        <tr>
+        	<td>New password</td>
+            <td><input type="password" required="required" name="new_pwd" id="new_pwd" maxlength="32" tabindex="2"></td>
+        </tr>
+        <tr>
+        	<td>Re-type new password</td>
+            <td><input type="password" required="required" name="retype_pwd" id="retype_pwd" maxlength="32" tabindex="3"></td>
+        </tr>
+        <tr>
+        	<td>&nbsp;</td>
+        	<td><input type="submit" id="submit_change_pwd" class="button" value="Change password" ></td>
+      	</tr>
+      	<tr>
+        	<td>&nbsp;</td> 
+           <td id="message_space"><?php if(isset($message)) echo $message; ?></td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+function validate_change_password()
+{
+	existing_pwd = document.getElementById('existing_pwd').value;
+	new_pwd = document.getElementById('new_pwd').value;
+	retype_pwd = document.getElementById('retype_pwd').value;
+	
+	if(new_pwd.length < 6 || retype_pwd.length < 6)
+	{
+		document.getElementById('message_space').innerHTML = '<span class="alert">Password should be minimum 6 characters long!</span>';
+		return false;
+	}
+	if(new_pwd != retype_pwd)
+	{
+		document.getElementById('message_space').innerHTML = '<span class="alert">Passwords does not match!</span>';
+		return false;
+	}
+	
+	document.getElementById('submit_change_pwd').disabled = true;
+	
+	return true;
+}
+</script>
+<?php include VIEW_SCRIPTS.'index/templates/default_footer.phtml' ?>

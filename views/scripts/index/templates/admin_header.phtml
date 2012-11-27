@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title><?php echo($title); ?></title>
+<link href="<?php echo CSS; ?>electrix_style.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="<?php echo JS; ?>electrix_javascripts.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div align="center" style="height:100%">
+<div id="envelope">
+	<div id="navigation" valign="top">
+    	<div id="profile_pic">
+        	<div class="profile_pic_mask">
+        	<!--<a href="index.php?rt=profile/changePic">--><img src="
+        	<?php
+			if(isset($_SESSION['myid']))
+			{
+				if(file_exists(IMAGES."profilepics/".$_SESSION['myid'].".jpg"))
+					echo(IMAGES."profilepics/".$_SESSION['myid'].".jpg");
+				else
+					echo(IMAGES."profilepics/default.jpg");
+			}
+			else
+				echo(IMAGES."profilepics/default.jpg");
+			?>
+           " alt="Magesh's pic" /><!-- </a>-->
+            </div>
+        </div>
+       <?php
+		if(isset($_SESSION['myid']))
+		{
+			//FOR AUTHORISED USER
+			?>
+            <a class="nav_links" href="index.php?rt=admin/welcome">View Request</a>         
+            <a class="nav_links" href="index.php?rt=friends">Existing Users</a>
+            <!--<a class="nav_links" href="index.php?rt=photos">Track Login</a>
+            <a class="nav_links" href="index.php?rt=messages">Manage User</a>
+            <a class="nav_links" href="index.php?rt=messages/newsletter">Monitor Newsletter Activity</a>
+            <a class="nav_links" href="#">Videos</a>
+            <a class="nav_links" href="#">Get-together</a>
+            -->
+            <?php
+		}
+		?>
+        <p class="nav_links" ><img src="<?php echo IMAGES; ?>logo.png" height="25" alt="ELECTRIX" /></p>
+	</div>
+    
+    <div id="content" valign="top">
+    
+    	<div id="profile_header">
+        <?php
+            if(isset($_SESSION['myid']))
+            {
+                //FOR AUTHORISED USER
+                ?>
+                <div>
+                <div style="float:left">
+                    <span style="font-size:30px;">
+                    <?php 
+                    if (isset($_SESSION['displayname']))
+                        echo($_SESSION['displayname']) ; 
+                    ?>
+                    </span>
+                    &nbsp;&nbsp;
+                                       
+                </div>
+                <div style="text-align:right">
+                    <?php
+                        if (isset($_SESSION['logintype']) && $_SESSION['logintype']=='admin')
+                        {
+                            ?>
+                                <a href="index.php?rt=admin/logout">Logout</a> 
+                            <?php
+                        }
+                        elseif(isset($_SESSION['myid']))
+                        {
+                            ?>
+                            <a href="index.php?rt=login/logout">Logout</a> 
+                            <?php
+                        }
+                        ?>
+                </div>
+		<br /><br />
+                <span>
+                    <?php
+                    if (isset ($_SESSION['status']))
+                        echo($_SESSION['status']);
+                    ?>
+                </span>
+                
+                </div>
+                <?php
+                }
+                else
+                {
+                    //FOR UN-AUTHORISED USER
+                    ?>
+                    <p style="font-size:30px">Welcome to Electrix</p>
+                    <p>A private networking app from Magesh Ravi</p>
+                    <br/>
+                    <?php
+                }
+		?>
+        </div>
+        <div id="story">
